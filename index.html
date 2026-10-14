@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module - Data Communication & Elements</title>
+    <style>
+        /* ======================================================= */
+        /* CORE STYLES (Foundation Diploma Template Match)          */
+        /* ======================================================= */
+        :root { 
+            --bg-color: #0b0f19; --primary: #3b82f6; --accent: #f43f5e; 
+            --whatsapp: #25D366; --google: #4285F4; --fb-blue: #1877F2; 
+            --zoom-blue: #2D8CFF; --yt-red: #FF0000; --text-main: #f8fafc; 
+            --text-muted: #94a3b8; --panel-bg: rgba(15, 23, 42, 0.7); 
+            --gold: #f59e0b; --green: #10b981; --cyan: #06b6d4; --purple: #8b5cf6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; user-select: none; }
+        html { font-size: 16px; } 
+        @media (min-width: 1920px) { html { font-size: 20px; } } 
+        @media (min-width: 2560px) { html { font-size: 26px; } } 
+        @media (min-width: 3800px) { html { font-size: 36px; } }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); overflow: hidden; width: 100vw; height: 100vh; background-image: radial-gradient(circle at center, #1e1b4b 0%, #0b0f19 100%); }
+        #presentation { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .slide { position: absolute; width: 92%; max-width: 1600px; height: 86%; opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; justify-content: center; pointer-events: none; overflow-y: auto; scrollbar-width: none; }
+        .slide::-webkit-scrollbar { display: none; } 
+        .slide.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+        
+        h1 { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        h2 { font-size: 2rem; margin-bottom: 25px; color: #cbd5e1; } 
+        p, li { font-size: 1.5rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 15px; }
+        .module-tag { display:inline-block; border: 1px solid var(--cyan); padding: 4px 18px; border-radius: 20px; font-weight: bold; letter-spacing: 1px; margin-bottom: 10px; font-size: 0.9rem; align-self: flex-start; }
+
+        /* GENERAL NODES & LANDSCAPES */
+        .landscape-box { position: relative; width: 100%; height: 48vh; min-height: 380px; max-height: 600px; background: var(--panel-bg); border-radius: 15px; border: 1px solid #334155; margin-top: 15px; box-shadow: inset 0 0 40px rgba(0,0,0,0.7); overflow: visible; flex-shrink: 0; }
+        
+        .desc-box { margin-top: 20px; background: rgba(15, 23, 42, 0.8); border-left: 5px solid var(--primary); padding: 15px 25px; border-radius: 8px; height: auto; font-size: 1.3rem; line-height: 1.6; color: #f8fafc; opacity: 0; transition: opacity 0.5s; z-index: 50; position: relative; overflow: visible; display: block; }
+        
+        .comparison-layout { display: flex; gap: 30px; width: 100%; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .info-card { flex: 1; min-width: 250px; background: var(--panel-bg); border: 1px solid #334155; padding: 25px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform: translateY(20px); opacity: 0.4; filter: grayscale(1); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.5s; }
+        .info-card.active-card { opacity: 1; filter: grayscale(0); transform: translateY(0); }
+        
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        .card-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 2.2rem;}
+        .card-title-box h3 { font-size: 1.8rem; color: #f8fafc; } .card-title-box span { font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #cbd5e1;}
+
+        /* SLIDE 1: CONCEPTUAL NETWORK DIAGRAM STYLES */
+        .network-diagram { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: relative; }
+        .protocol-shield { position: absolute; top: 10%; background: rgba(245, 158, 11, 0.1); border: 2px dashed #475569; border-radius: 15px; padding: 10px 30px; display: flex; align-items: center; gap: 15px; z-index: 20; opacity: 0.3; transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); filter: grayscale(1); }
+        .protocol-shield.active { opacity: 1; filter: grayscale(0); border-color: var(--gold); border-style: solid; background: rgba(245, 158, 11, 0.15); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); transform: scale(1.1); }
+        .devices-row { display: flex; justify-content: space-between; align-items: center; width: 85%; margin-top: 50px; position: relative; z-index: 10; }
+        .comm-node { width: 160px; background: rgba(15, 23, 42, 0.9); border: 2px solid #334155; border-radius: 15px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 5; transition: all 0.5s; opacity: 0.4; filter: grayscale(1); }
+        .comm-node.active { opacity: 1; filter: grayscale(0); border-color: var(--primary); transform: scale(1.1); box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
+        .comm-node .node-icon { font-size: 3.5rem; margin-bottom: 5px; }
+        .medium-path { position: absolute; top: 50%; left: 160px; right: 160px; height: 12px; background: #1e293b; transform: translateY(-50%); z-index: 1; border-radius: 6px; opacity: 0.3; transition: all 0.5s; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; }
+        .medium-path.active { opacity: 1; background: var(--cyan); box-shadow: 0 0 20px var(--cyan); }
+        .medium-label { color: var(--cyan); font-weight: bold; font-size: 1.2rem; letter-spacing: 1px; opacity: 0; transition: opacity 0.5s; }
+        .medium-path.active .medium-label { opacity: 1; }
+        .moving-message { position: absolute; top: 50%; width: 50px; height: 35px; background: white; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; transform: translate(-50%, -50%); opacity: 0; z-index: 15; transition: opacity 0.3s; box-shadow: 0 0 15px rgba(255,255,255,0.8); }
+        .moving-message.active { opacity: 1; animation: travelMsg 2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        @keyframes travelMsg { 0% { left: 0%; } 100% { left: 100%; } }
+        .sec-beam { position: absolute; top: 100%; width: 2px; height: 80px; background: linear-gradient(to bottom, var(--gold), transparent); opacity: 0; transition: opacity 0.5s; }
+        .protocol-shield.active .sec-beam { opacity: 0.6; animation: beamPulse 1.5s infinite alternate; }
+        @keyframes beamPulse { 0% { height: 60px; opacity: 0.3; } 100% { height: 120px; opacity: 0.8; } }
+
+        /* SLIDE 5: DATA PACKET ANIMATION STYLES */
+        .packet-sandbox { display: flex; justify-content: space-between; align-items: center; width: 85%; height: 100%; margin: 0 auto; position: relative; z-index: 10; }
+        .file-box { width: 90px; height: 120px; background: linear-gradient(135deg, var(--primary), #1e3a8a); border: 2px solid #60a5fa; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.5); position: absolute; top: 50%; transform: translateY(-50%); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 20; }
+        .file-box span { font-size: 2.5rem; margin-bottom: 5px; }
+        .file-box p { font-size: 0.9rem; margin: 0; color: white; font-weight: bold; }
+        
+        .file-source { left: 40px; }
+        .file-dest { right: 40px; opacity: 0; transform: translateY(-50%) scale(0); }
+        
+        .data-pkt { width: 45px; height: 45px; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 1.1rem; position: absolute; top: 50%; opacity: 0; transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); z-index: 25; box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.3); }
+        .data-pkt.p1 { background: var(--accent); left: 60px; transform: translateY(-50%); }
+        .data-pkt.p2 { background: var(--gold); left: 60px; transform: translateY(-50%); }
+        .data-pkt.p3 { background: var(--whatsapp); left: 60px; transform: translateY(-50%); }
+        
+        /* Animation states for packets */
+        .file-source.hide { opacity: 0; transform: translateY(-50%) scale(0); }
+        .data-pkt.split.p1 { opacity: 1; left: 160px; transform: translateY(-130%); }
+        .data-pkt.split.p2 { opacity: 1; left: 160px; transform: translateY(-50%); }
+        .data-pkt.split.p3 { opacity: 1; left: 160px; transform: translateY(30%); }
+        
+        .data-pkt.travel.p1 { left: calc(100% - 200px); }
+        .data-pkt.travel.p2 { left: calc(100% - 200px); transition-delay: 0.2s; }
+        .data-pkt.travel.p3 { left: calc(100% - 200px); transition-delay: 0.4s; }
+        
+        .data-pkt.merge { opacity: 0; left: calc(100% - 80px); transform: translateY(-50%); transition-delay: 0s !important; }
+        .file-dest.show { opacity: 1; transform: translateY(-50%) scale(1); }
+
+        @media (max-width: 1024px) {
+            .devices-row { width: 95%; flex-direction: column; gap: 60px; margin-top: 100px; }
+            .medium-path { top: 50%; left: 50%; width: 8px; height: 60%; transform: translate(-50%, -50%); }
+            @keyframes travelMsg { 0% { top: 0%; left: 50%; } 100% { top: 100%; left: 50%; } }
+            .medium-label { transform: rotate(90deg); margin-bottom: 0; margin-left: 40px; }
+            
+            .packet-sandbox { flex-direction: column; width: 100%; justify-content: center; gap: 150px; }
+            .file-source { left: 50%; top: 10%; transform: translate(-50%, 0); }
+            .file-dest { right: auto; left: 50%; top: 80%; transform: translate(-50%, 0) scale(0); }
+            /* Simplified mobile adjustments for slide 5 would go here */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation" onclick="nextSlide()">
+        
+        <!-- SLIDE 0: TITLE SLIDE -->
+        <section class="slide active" id="slide-0" style="align-items: center; text-align: center; justify-content: center;">
+            <div style="max-width: 1000px; width: 100%;">
+                <h2 style="color: var(--accent); font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px;">Foundation Diploma in ICT</h2>
+                <h1 style="font-size: 3.5rem; margin-bottom: 5px; color: var(--cyan); text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">දත්ත සන්නිවේදනය</h1>
+                <p style="font-size: 2rem; color: var(--text-main); font-weight: bold; margin-bottom: 25px;">Data Communication & Elements</p>
+
+                <div id="module-list" style="background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; border-radius: 15px; padding: 20px 25px; text-align: left; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="font-size: 1.2rem; margin-bottom: 10px; color: #e2e8f0; display: flex; align-items: center; gap: 15px;"><span style="background: var(--cyan); color: #000; padding: 3px 10px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">01</span> පණිවිඩය (Message) සහ ප්‍රේරකයා (Sender)</li>
+                        <li style="font-size: 1.2rem; margin-bottom: 10px; color: #e2e8f0; display: flex; align-items: center; gap: 15px;"><span style="background: var(--cyan); color: #000; padding: 3px 10px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">02</span> ග්‍රාහකයා (Receiver) සහ සන්නිවේදන මාධ්‍යය (Medium)</li>
+                        <li style="font-size: 1.2rem; margin-bottom: 10px; color: #e2e8f0; display: flex; align-items: center; gap: 15px;"><span style="background: var(--cyan); color: #000; padding: 3px 10px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">03</span> ප්‍රොටෝකෝලය (Protocol) - නීති පද්ධතිය</li>
+                        <li style="font-size: 1.2rem; margin-bottom: 0; color: #e2e8f0; display: flex; align-items: center; gap: 15px;"><span style="background: var(--accent); color: #fff; padding: 3px 10px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">04</span> දත්ත පැකට්ටු (Data Packets)</li>
+                    </ul>
+                </div>
+
+                <div id="profile-box" style="display: inline-flex; align-items: center; justify-content: center; gap: 20px; background: rgba(15, 23, 42, 0.9); padding: 15px 30px; border-radius: 15px; border-left: 5px solid var(--cyan); text-align: left; max-width: 900px; box-shadow: 0 5px 25px rgba(0,0,0,0.4); z-index: 10; position: relative;">
+                    <div style="width: 80px; height: 80px; border-radius: 12px; border: 2px solid var(--cyan); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); flex-shrink: 0; background-color: #1e293b; background-image: url('./image_8ca44b.png'); background-size: cover; background-position: center;"></div>
+                    <div>
+                        <p style="font-size: 0.9rem; color: var(--cyan); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Lecturer</p>
+                        <h3 style="font-size: 1.6rem; color: #f8fafc; margin-bottom: 4px;">Himanka Dodangoda</h3>
+                        <p style="font-size: 1rem; color: #cbd5e1; margin-bottom: 3px;">MSc in AI (Reading) | MBA | BSc (Hons) in Software Eng. (UK) | Dip. in Ethical Hacking & Cyber Security</p>
+                        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">SLQF 10 | SCQF 7, 8, 9</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 1: NEW CONCEPTUAL PIPELINE -->
+        <section class="slide" id="slide-1">
+            <div class="module-tag" style="background:rgba(6, 182, 212, 0.2); border-color: var(--cyan); color: var(--cyan);">DATA COMMUNICATION MODEL</div>
+            <h1 style="color: var(--cyan);">දත්ත සන්නිවේදන මූලිකාංග</h1>
+            <h2>පද්ධතියක ප්‍රධාන සංරචක 5 ක් එකිනෙක ක්‍රියාත්මක වන ආකාරය</h2>
+            
+            <div class="landscape-box" style="border-color: var(--cyan); display: flex; align-items: center; justify-content: center;">
+                <div class="network-diagram">
+                    
+                    <!-- Protocol (Governing Rules) -->
+                    <div class="protocol-shield" id="cn-protocol">
+                        <div style="font-size: 2.5rem;">👮📜</div>
+                        <div>
+                            <h4 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 2px;">ප්‍රොටෝකෝලය (Protocol)</h4>
+                            <p style="color: #cbd5e1; font-size: 0.9rem; margin: 0;">පාලනය කරන නීති පද්ධතිය</p>
+                        </div>
+                        <div class="sec-beam" style="left: 20%;"></div>
+                        <div class="sec-beam" style="left: 50%;"></div>
+                        <div class="sec-beam" style="left: 80%;"></div>
+                    </div>
+
+                    <div class="devices-row">
+                        <!-- Sender -->
+                        <div class="comm-node" id="cn-sender">
+                            <div class="node-icon">💻</div>
+                            <h4 style="color: white; font-size: 1.2rem;">ප්‍රේරකයා</h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Sender</p>
+                        </div>
+
+                        <!-- Medium Path -->
+                        <div class="medium-path" id="cn-medium">
+                            <div class="medium-label">🌐 මාධ්‍යය (Medium)</div>
+                            <!-- Moving Message -->
+                            <div class="moving-message" id="cn-msg">✉️</div>
+                        </div>
+
+                        <!-- Receiver -->
+                        <div class="comm-node" id="cn-receiver" style="border-color: var(--green);">
+                            <div class="node-icon">🖥️</div>
+                            <h4 style="color: white; font-size: 1.2rem;">ග්‍රාහකයා</h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Receiver</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="desc-box" id="overview-desc" style="border-left-color: var(--cyan);">Click to build the network...</div>
+        </section>
+
+        <!-- SLIDE 2: 1. Sender & Message -->
+        <section class="slide" id="slide-2">
+            <div class="module-tag" style="background:rgba(59, 130, 246, 0.2); border-color: var(--primary); color: var(--primary);">ELEMENTS 01 & 02</div>
+            <h1 style="color: var(--primary);">ප්‍රේරකයා සහ පණිවිඩය</h1>
+            <h2>දත්ත හුවමාරුව ආරම්භ වන මූලික අවස්ථාව</h2>
+            
+            <div class="comparison-layout">
+                <div class="info-card" id="card-sender" style="border-top: 4px solid var(--primary);">
+                    <div class="card-header">
+                        <div class="card-icon">📤</div>
+                        <div class="card-title-box"><h3 style="color: var(--primary);">ප්‍රේරකයා (Sender)</h3><span>Source Device</span></div>
+                    </div>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">පණිවිඩය නිකුත් කරන හෝ යවන උපාංගය (Device) වේ. උදාහරණයක් ලෙස පරිගණකයක්, ස්මාර්ට් ජංගම දුරකථනයක් හෝ සේවාදායකයක් (Server) දැක්විය හැක.</p>
+                </div>
+
+                <div class="info-card" id="card-message" style="border-top: 4px solid var(--gold);">
+                    <div class="card-header">
+                        <div class="card-icon">💬</div>
+                        <div class="card-title-box"><h3 style="color: var(--gold);">පණිවිඩය (Message)</h3><span>Data / Information</span></div>
+                    </div>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">හුවමාරු වන දත්ත හෝ තොරතුරු වේ. එය පෙළ (Text), ශබ්දය (Audio), රූප (Images) හෝ වීඩියෝ (Video) විය හැක.</p>
+                </div>
+            </div>
+            <div class="desc-box" id="sm-desc" style="border-left-color: var(--primary);">Click to highlight Sender and Message details...</div>
+        </section>
+
+        <!-- SLIDE 3: 3. Receiver & Medium -->
+        <section class="slide" id="slide-3">
+            <div class="module-tag" style="background:rgba(16, 185, 129, 0.2); border-color: var(--green); color: var(--green);">ELEMENTS 03 & 04</div>
+            <h1 style="color: var(--green);">ග්‍රාහකයා සහ මාධ්‍යය</h1>
+            <h2>දත්ත රැගෙන යන මාර්ගය සහ එය ලබාගන්නා පාර්ශ්වය</h2>
+            
+            <div class="comparison-layout">
+                <div class="info-card" id="card-receiver" style="border-top: 4px solid var(--green);">
+                    <div class="card-header">
+                        <div class="card-icon">📥</div>
+                        <div class="card-title-box"><h3 style="color: var(--green);">ග්‍රාහකයා (Receiver)</h3><span>Destination Device</span></div>
+                    </div>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">ප්‍රේරකයෙන් එවනු ලබන පණිවිඩය ලබාගන්නා උපාංගය වේ. සන්නිවේදන ක්‍රියාවලියේ අවසාන ලබන්නා මෙයින් නිරූපණය වේ.</p>
+                </div>
+
+                <div class="info-card" id="card-medium" style="border-top: 4px solid var(--cyan);">
+                    <div class="card-header">
+                        <div class="card-icon">🛣️</div>
+                        <div class="card-title-box"><h3 style="color: var(--cyan);">සන්නිවේදන මාධ්‍යය (Medium)</h3><span>Transmission Path</span></div>
+                    </div>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">දත්ත ගමන් කරන භෞතික පථය (Path) වේ. එය කේබල් මගින් (Wired - UTP, Fiber Optic) හෝ රැහැන් රහිතව (Wireless - Wi-Fi, Bluetooth) විය හැක.</p>
+                </div>
+            </div>
+            <div class="desc-box" id="rm-desc" style="border-left-color: var(--green);">Click to explore Receiver and Medium...</div>
+        </section>
+
+        <!-- SLIDE 4: 5. Protocol -->
+        <section class="slide" id="slide-4">
+            <div class="module-tag" style="background:rgba(245, 158, 11, 0.2); border-color: var(--gold); color: var(--gold);">ELEMENT 05</div>
+            <h1 style="color: var(--gold);">ප්‍රොටෝකෝලය (Protocol)</h1>
+            <h2>සන්නිවේදනය පාලනය කරන නීති පද්ධතිය</h2>
+            
+            <div class="landscape-box" style="border-color: var(--gold); display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 40px; text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: 15px;">👮📜🤝💻</div>
+                <h3 style="color: var(--gold); font-size: 2rem; margin-bottom: 15px;">නීති සහ රෙගුලාසි මාලාවක්</h3>
+                <p style="font-size: 1.3rem; max-width: 900px; color: #cbd5e1; line-height: 1.6;">
+                    උපාංග දෙකක් අතර දත්ත හුවමාරු වන විට ඒවා අනුගමනය කළ යුතු සම්මත නීති පද්ධතිය (Set of Rules / Laws) <b>ප්‍රොටෝකෝලය</b> නම් වේ. මෙයින් තොරව උපාංගවලට නිවැරදිව තොරතුරු හුවමාරු කරගත නොහැක. (උදා: TCP/IP, HTTP, FTP).
+                </p>
+            </div>
+            <div class="desc-box" id="proto-desc" style="border-left-color: var(--gold);">Click to see summary of Communication Protocols...</div>
+        </section>
+
+        <!-- SLIDE 5: DATA PACKETS (NEW) -->
+        <section class="slide" id="slide-5">
+            <div class="module-tag" style="background:rgba(244, 63, 94, 0.2); border-color: var(--accent); color: var(--accent);">HOW DATA TRAVELS</div>
+            <h1 style="color: var(--accent);">දත්ත පැකට්ටු (Data Packets)</h1>
+            <h2>විශාල දත්ත කුඩා කොටස් වලට කඩා සම්ප්‍රේෂණය කිරීම</h2>
+            
+            <div class="landscape-box" style="border-color: var(--accent); box-shadow: inset 0 0 40px rgba(244, 63, 94, 0.15);">
+                
+                <div class="packet-sandbox">
+                    <!-- Sender Node Concept -->
+                    <div class="comm-node" style="opacity: 1; filter: none; border-color: #334155; width: 120px; padding: 10px;">
+                        <div class="node-icon" style="font-size: 2.5rem;">📤</div>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Sender</p>
+                    </div>
+
+                    <!-- Center Path -->
+                    <div class="medium-path active" style="opacity: 0.5;"></div>
+
+                    <!-- The Original File -->
+                    <div class="file-box file-source" id="f-source">
+                        <span>📄</span>
+                        <p>File</p>
+                    </div>
+
+                    <!-- The Broken Packets -->
+                    <div class="data-pkt p1" id="pkt-1">P1</div>
+                    <div class="data-pkt p2" id="pkt-2">P2</div>
+                    <div class="data-pkt p3" id="pkt-3">P3</div>
+
+                    <!-- Receiver Node Concept -->
+                    <div class="comm-node" style="opacity: 1; filter: none; border-color: #334155; width: 120px; padding: 10px;">
+                        <div class="node-icon" style="font-size: 2.5rem;">📥</div>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Receiver</p>
+                    </div>
+
+                    <!-- Reassembled File -->
+                    <div class="file-box file-dest" id="f-dest">
+                        <span>📄</span>
+                        <p>File</p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="desc-box" id="pkt-desc" style="border-left-color: var(--accent);">Click to see how large files are broken down...</div>
+        </section>
+
+    </div>
+
+    <!-- JAVASCRIPT ANIMATION LOGIC -->
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let isAnimating = false;
+        const sleepGlobal = ms => new Promise(r => setTimeout(r, ms));
+
+        // Slide 1 Pipeline Steps
+        let pStep = -1;
+        const pData = [
+            { txt: "<b>1. අන්ත ලක්ෂ්‍ය (Endpoints):</b> දත්ත යවන ප්‍රේරකයා (Sender) සහ එය ලබාගන්නා ග්‍රාහකයා (Receiver) පද්ධතියේ දෙපස සිටී." },
+            { txt: "<b>2. සන්නිවේදන මාධ්‍යය (Medium):</b> එම උපකරණ දෙක සම්බන්ධ කරමින් දත්ත ගමන් කිරීමට භෞතික මාර්ගයක් (පාරක්) සෑදේ." },
+            { txt: "<b>3. පණිවිඩය (Message):</b> ප්‍රේරකයා විසින් සකස් කළ දත්ත, මාධ්‍යය (පාර) ඔස්සේ ග්‍රාහකයා වෙත ගමන් කිරීම ආරම්භ කරයි." },
+            { txt: "<b>4. ප්‍රොටෝකෝලය (Protocol):</b> මේ සම්පූර්ණ දත්ත හුවමාරුව ආරක්ෂිතව හා නිවැරදිව සිදුවීමට නීති පනවන්නේ ප්‍රොටෝකෝලය මගිනි (පොලිසියක් මෙන්)." }
+        ];
+
+        // Slide 2 Steps
+        let smStep = -1;
+        const smData = [
+            { txt: "<b>ප්‍රේරකයා (Sender):</b> සන්නිවේදන ක්‍රියාවලියේ මූලිකයා වේ. දත්ත සම්ප්‍රේෂණය කිරීම සඳහා උපාංගය මුල් වේ." },
+            { txt: "<b>පණිවිඩය (Message):</b> යවන්නා සහ ලබන්නා අතර හුවමාරු වන තොරතුරු ඒකකයයි. එය මාධ්‍යය මතින් ගමන් කරයි." }
+        ];
+
+        // Slide 3 Steps
+        let rmStep = -1;
+        const rmData = [
+            { txt: "<b>ග්‍රාහකයා (Receiver):</b> දත්තවල ගමනාන්තය වන අතර, පණිවිඩය ලැබී එය තේරුම් ගනී." },
+            { txt: "<b>සන්නිවේදන මාධ්‍යය (Medium):</b> දත්ත රැගෙන යන පාලම හෙවත් භෞතික මාර්ගය මෙයයි." }
+        ];
+
+        // Slide 4 Steps
+        let protoStep = -1;
+        const protoData = [
+            { txt: "<b>ප්‍රොටෝකෝලය (Protocol):</b> මාර්ග නීති සේම මුළු පද්ධතියම පාලනය කරන නීති රීති මාලාව මෙයින් නිරූපණය වේ." }
+        ];
+
+        // Slide 5 Steps (Data Packets)
+        let pktStep = -1;
+        const pktData = [
+            { txt: "<b>1. දත්ත වෙන් කිරීම (Fragmentation):</b> විශාල ගොනුවක් (File) එකවර යවන්නේ නැත. ප්‍රේරකයා විසින් එය කුඩා දත්ත කොටස් (Packets) වලට වෙන් කරනු ලබයි." },
+            { txt: "<b>2. සම්ප්‍රේෂණය (Transmission):</b> වෙන් කළ පැකට්ටු එකින් එක සන්නිවේදන මාධ්‍යය දිගේ ග්‍රාහකයා වෙත ගමන් කරයි." },
+            { txt: "<b>3. ප්‍රතිසම්පාදනය (Reassembly):</b> ග්‍රාහකයා වෙත පැමිණි පසු, එම පැකට්ටු නැවතත් මුල් ගොනුව බවට නිවැරදි පිළිවෙලට එකලස් වේ." }
+        ];
+
+        function updateSlides() {
+            slides.forEach((slide, index) => { 
+                if (index === currentSlide) slide.classList.add('active'); 
+                else slide.classList.remove('active'); 
+            });
+
+            if (currentSlide === 1) {
+                pStep = -1; isAnimating = false;
+                document.getElementById('cn-sender').classList.remove('active');
+                document.getElementById('cn-receiver').classList.remove('active');
+                document.getElementById('cn-medium').classList.remove('active');
+                document.getElementById('cn-msg').classList.remove('active');
+                document.getElementById('cn-protocol').classList.remove('active');
+                document.getElementById('overview-desc').innerHTML = "Click to build the network...";
+            }
+            if (currentSlide === 2) {
+                smStep = -1; isAnimating = false;
+                document.getElementById('card-sender').classList.remove('active-card');
+                document.getElementById('card-message').classList.remove('active-card');
+                document.getElementById('sm-desc').innerHTML = "Click to highlight Sender and Message details...";
+            }
+            if (currentSlide === 3) {
+                rmStep = -1; isAnimating = false;
+                document.getElementById('card-receiver').classList.remove('active-card');
+                document.getElementById('card-medium').classList.remove('active-card');
+                document.getElementById('rm-desc').innerHTML = "Click to explore Receiver and Medium...";
+            }
+            if (currentSlide === 4) {
+                protoStep = -1; isAnimating = false;
+                document.getElementById('proto-desc').innerHTML = "Click to see summary of Communication Protocols...";
+            }
+            if (currentSlide === 5) {
+                pktStep = -1; isAnimating = false;
+                document.getElementById('f-source').classList.remove('hide');
+                document.getElementById('f-dest').classList.remove('show');
+                document.querySelectorAll('.data-pkt').forEach(p => {
+                    p.classList.remove('split', 'travel', 'merge');
+                });
+                document.getElementById('pkt-desc').innerHTML = "Click to see how large files are broken down...";
+            }
+        }
+
+        async function runPipelineStep() {
+            if (isAnimating) return; isAnimating = true; pStep++;
+            const desc = document.getElementById('overview-desc');
+            if (pStep === 0) {
+                document.getElementById('cn-sender').classList.add('active');
+                document.getElementById('cn-receiver').classList.add('active');
+            } else if (pStep === 1) {
+                document.getElementById('cn-medium').classList.add('active');
+            } else if (pStep === 2) {
+                document.getElementById('cn-msg').classList.add('active');
+            } else if (pStep === 3) {
+                document.getElementById('cn-protocol').classList.add('active');
+            }
+            desc.style.opacity = 0;
+            setTimeout(() => { desc.innerHTML = pData[pStep].txt; desc.style.opacity = 1; isAnimating = false; }, 300);
+        }
+
+        async function runSmStep() {
+            if (isAnimating) return; isAnimating = true; smStep++;
+            const desc = document.getElementById('sm-desc');
+            if (smStep === 0) { document.getElementById('card-sender').classList.add('active-card'); } 
+            else if (smStep === 1) { document.getElementById('card-message').classList.add('active-card'); }
+            desc.style.opacity = 0;
+            setTimeout(() => { desc.innerHTML = smData[smStep].txt; desc.style.opacity = 1; isAnimating = false; }, 300);
+        }
+
+        async function runRmStep() {
+            if (isAnimating) return; isAnimating = true; rmStep++;
+            const desc = document.getElementById('rm-desc');
+            if (rmStep === 0) { document.getElementById('card-receiver').classList.add('active-card'); } 
+            else if (rmStep === 1) { document.getElementById('card-medium').classList.add('active-card'); }
+            desc.style.opacity = 0;
+            setTimeout(() => { desc.innerHTML = rmData[rmStep].txt; desc.style.opacity = 1; isAnimating = false; }, 300);
+        }
+
+        async function runProtoStep() {
+            if (isAnimating) return; isAnimating = true; protoStep++;
+            const desc = document.getElementById('proto-desc');
+            desc.style.opacity = 0;
+            setTimeout(() => { desc.innerHTML = protoData[protoStep].txt; desc.style.opacity = 1; isAnimating = false; }, 300);
+        }
+
+        async function runPktStep() {
+            if (isAnimating) return; isAnimating = true; pktStep++;
+            const desc = document.getElementById('pkt-desc');
+            
+            if (pktStep === 0) {
+                // Break file into packets
+                document.getElementById('f-source').classList.add('hide');
+                document.querySelectorAll('.data-pkt').forEach(p => p.classList.add('split'));
+            } else if (pktStep === 1) {
+                // Packets travel
+                document.querySelectorAll('.data-pkt').forEach(p => p.classList.add('travel'));
+            } else if (pktStep === 2) {
+                // Merge back to file
+                document.querySelectorAll('.data-pkt').forEach(p => p.classList.add('merge'));
+                await sleepGlobal(600); // wait for packets to reach the end before showing file
+                document.getElementById('f-dest').classList.add('show');
+            }
+
+            desc.style.opacity = 0;
+            setTimeout(() => { desc.innerHTML = pktData[pktStep].txt; desc.style.opacity = 1; isAnimating = false; }, 300);
+        }
+
+        function nextSlide() {
+            if (isAnimating) return;
+            if (currentSlide === 1 && pStep < pData.length - 1) { runPipelineStep(); return; }
+            if (currentSlide === 2 && smStep < smData.length - 1) { runSmStep(); return; }
+            if (currentSlide === 3 && rmStep < rmData.length - 1) { runRmStep(); return; }
+            if (currentSlide === 4 && protoStep < protoData.length - 1) { runProtoStep(); return; }
+            if (currentSlide === 5 && pktStep < pktData.length - 1) { runPktStep(); return; }
+
+            if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); }
+        }
+
+        function prevSlide() { 
+            if (isAnimating) return;
+            if (currentSlide > 0) { currentSlide--; updateSlides(); } 
+        }
+
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide(); 
+            else if (e.key === 'ArrowLeft') prevSlide(); 
+        });
+
+        updateSlides();
+    </script>
+</body>
+</html>
